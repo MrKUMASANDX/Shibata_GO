@@ -1,84 +1,50 @@
-// =====================
-// 新発田市観光マップ
-// =====================
-
-// =====================
-// 地図初期化
-// =====================
-
-// 新発田駅付近を初期表示
-const map = L.map('map').setView(
-[37.9495, 139.3270],
-14
-);
-
-// =====================
-// OpenStreetMap
-// =====================
+const map = L.map('map').setView([37.95, 139.33], 14);
 
 L.tileLayer(
-
-```
-'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-
-{
-    attribution:
-    '&copy; OpenStreetMap contributors'
-}
-```
-
+    'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+    {
+        attribution: '&copy; OpenStreetMap contributors'
+    }
 ).addTo(map);
 
-// =====================
-// HTML要素取得
-// =====================
-
 const speedText =
-document.getElementById("speed");
+    document.getElementById("speed");
 
 const distanceText =
-document.getElementById("distance");
+    document.getElementById("distance");
 
 const latitudeText =
-document.getElementById("latitude");
+    document.getElementById("latitude");
 
 const longitudeText =
-document.getElementById("longitude");
+    document.getElementById("longitude");
+
+const altitudeText =
+    document.getElementById("altitude");
 
 const accuracyText =
-document.getElementById("accuracy");
+    document.getElementById("accuracy");
 
 const followBtn =
-document.getElementById("followBtn");
+    document.getElementById("followBtn");
 
 const resetBtn =
-document.getElementById("resetBtn");
+    document.getElementById("resetBtn");
 
 const toggleGpsBtn =
-document.getElementById("toggleGpsBtn");
+    document.getElementById("toggleGpsBtn");
 
 const gpsData =
-document.getElementById("gpsData");
-
-// =====================
-// 現在地アイコン
-// =====================
+    document.getElementById("gpsData");
 
 const gpsIcon = L.icon({
 
-```
-iconUrl: 'location.png',
+    iconUrl: 'location.png',
 
-iconSize: [40, 40],
+    iconSize: [40, 40],
 
-iconAnchor: [20, 20]
-```
-
+    iconAnchor: [20, 20]
 });
-
-// =====================
-// 状態管理
-// =====================
 
 let followMode = true;
 
@@ -94,288 +60,240 @@ let previousLat = null;
 
 let previousLng = null;
 
-// =====================
-// 移動経路
-// =====================
-
 let polyline = L.polyline(path, {
 
-```
-color: 'blue',
+    color: 'blue',
 
-weight: 5
-```
+    weight: 5
 
 }).addTo(map);
 
-// =====================
-// 追従ボタン
-// =====================
+followBtn.addEventListener("click", () => {
 
-followBtn.addEventListener(
-"click",
+    followMode = !followMode;
 
-() => {
-
-```
-followMode = !followMode;
-
-followBtn.textContent =
-
-followMode
-? "追従: ON"
-: "追従: OFF";
-```
-
+    followBtn.textContent =
+        followMode
+        ? "追従: ON"
+        : "追従: OFF";
 });
 
-// =====================
-// GPS表示切替
-// =====================
+toggleGpsBtn.addEventListener("click", () => {
 
-toggleGpsBtn.addEventListener(
-"click",
+    gpsVisible = !gpsVisible;
 
-() => {
+    gpsData.style.display =
+        gpsVisible
+        ? "block"
+        : "none";
 
-```
-gpsVisible = !gpsVisible;
-
-gpsData.style.display =
-
-gpsVisible
-? "block"
-: "none";
-
-toggleGpsBtn.textContent =
-
-gpsVisible
-? "GPS情報を隠す"
-: "GPS情報を表示";
-```
-
+    toggleGpsBtn.textContent =
+        gpsVisible
+        ? "GPS情報を隠す"
+        : "GPS情報を表示";
 });
 
-// =====================
-// リセット
-// =====================
+resetBtn.addEventListener("click", () => {
 
-resetBtn.addEventListener(
-"click",
+    totalDistance = 0;
 
-() => {
+    path = [];
 
-```
-totalDistance = 0;
+    polyline.setLatLngs([]);
 
-path = [];
+    previousLat = null;
 
-polyline.setLatLngs([]);
+    previousLng = null;
 
-previousLat = null;
-
-previousLng = null;
-
-distanceText.textContent =
-"移動距離: 0 m";
-```
-
+    distanceText.textContent =
+        "移動距離: 0 m";
 });
-
-// =====================
-// GPS開始
-// =====================
 
 navigator.geolocation.watchPosition(
 
-```
-success,
+    success,
 
-error,
+    error,
 
-{
+    {
 
-    enableHighAccuracy: true,
+        enableHighAccuracy: true,
 
-    timeout: 10000,
+        timeout: 10000,
 
-    maximumAge: 0
-}
-```
-
+        maximumAge: 0
+    }
 );
-
-// =====================
-// GPS成功
-// =====================
 
 function success(position) {
 
-```
-const lat =
-    position.coords.latitude;
+    const lat =
+        position.coords.latitude;
 
-const lng =
-    position.coords.longitude;
+    const lng =
+        position.coords.longitude;
 
-const accuracy =
-    position.coords.accuracy;
+    const altitude =
+        position.coords.altitude;
 
-let speed =
-    position.coords.speed;
+    const accuracy =
+        position.coords.accuracy;
 
-if(speed === null){
+    let speed =
+        position.coords.speed;
 
-    speed = 0;
+    if (speed === null) {
+
+        speed = 0;
+    }
+
+    speed = (speed * 3.6).toFixed(1);
+
+    speedText.textContent =
+        `速度: ${speed} km/h`;
+
+    latitudeText.textContent =
+        `緯度: ${lat.toFixed(6)}`;
+
+    longitudeText.textContent =
+        `経度: ${lng.toFixed(6)}`;
+
+    if (altitude !== null) {
+
+        altitudeText.textContent =
+            `高度: ${altitude.toFixed(1)} m`;
+
+    } else {
+
+        altitudeText.textContent =
+            "高度: 取得不可";
+    }
+
+    accuracyText.textContent =
+        `精度: ${accuracy.toFixed(1)} m`;
+
+    if (followMode) {
+
+        map.setView([lat, lng], 17);
+    }
+
+    path.push([lat, lng]);
+
+    polyline.setLatLngs(path);
+
+    if (previousLat !== null) {
+
+        totalDistance += getDistance(
+
+            previousLat,
+            previousLng,
+
+            lat,
+            lng
+        );
+    }
+
+    previousLat = lat;
+
+    previousLng = lng;
+
+    distanceText.textContent =
+
+        totalDistance < 1000
+
+        ? `移動距離: ${totalDistance.toFixed(1)} m`
+
+        : `移動距離: ${(totalDistance / 1000).toFixed(2)} km`;
+
+    if (!marker) {
+
+        marker = L.marker(
+
+            [lat, lng],
+
+            {
+                icon: gpsIcon
+            }
+
+        ).addTo(map);
+
+    } else {
+
+        marker.setLatLng(
+            [lat, lng]
+        );
+    }
 }
 
-speed = (speed * 3.6).toFixed(1);
+function error(err) {
 
-speedText.textContent =
-    `速度: ${speed} km/h`;
+    console.log(err);
 
-latitudeText.textContent =
-    `緯度: ${lat.toFixed(6)}`;
-
-longitudeText.textContent =
-    `経度: ${lng.toFixed(6)}`;
-
-accuracyText.textContent =
-    `精度: ${accuracy.toFixed(1)} m`;
-
-if(followMode){
-
-    map.setView([lat,lng],17);
-}
-
-path.push([lat,lng]);
-
-polyline.setLatLngs(path);
-
-if(previousLat !== null){
-
-    totalDistance += getDistance(
-
-        previousLat,
-        previousLng,
-
-        lat,
-        lng
+    alert(
+        "位置情報を取得できません"
     );
 }
-
-previousLat = lat;
-previousLng = lng;
-
-distanceText.textContent =
-
-totalDistance < 1000
-
-? `移動距離: ${totalDistance.toFixed(1)} m`
-
-: `移動距離: ${(totalDistance/1000).toFixed(2)} km`;
-
-if(!marker){
-
-    marker = L.marker(
-
-        [lat,lng],
-
-        {icon:gpsIcon}
-
-    ).addTo(map);
-
-} else {
-
-    marker.setLatLng(
-        [lat,lng]
-    );
-}
-```
-
-}
-
-// =====================
-// GPSエラー
-// =====================
-
-function error(err){
-
-```
-console.log(err);
-
-alert(
-"位置情報を取得できません"
-);
-```
-
-}
-
-// =====================
-// 距離計算
-// =====================
 
 function getDistance(
 
-lat1,
-lng1,
+    lat1,
+    lng1,
 
-lat2,
-lng2
+    lat2,
+    lng2
 
-){
+) {
 
-const R = 6371000;
+    const R = 6371000;
 
-const dLat =
+    const dLat =
 
-(lat2-lat1)
+        (lat2 - lat1)
 
-* Math.PI/180;
+        * Math.PI / 180;
 
-const dLng =
+    const dLng =
 
-(lng2-lng1)
+        (lng2 - lng1)
 
-* Math.PI/180;
+        * Math.PI / 180;
 
-const a =
+    const a =
 
-Math.sin(dLat/2)
-*
-Math.sin(dLat/2)
+        Math.sin(dLat / 2)
 
-*
+        *
 
-Math.cos(
-lat1*Math.PI/180
-)
+        Math.sin(dLat / 2)
 
-*
+        +
 
-Math.cos(
-lat2*Math.PI/180
-)
+        Math.cos(
+            lat1 * Math.PI / 180
+        )
 
-*
+        *
 
-Math.sin(dLng/2)
+        Math.cos(
+            lat2 * Math.PI / 180
+        )
 
-*
+        *
 
-Math.sin(dLng/2);
+        Math.sin(dLng / 2)
 
-const c =
+        *
 
-2 * Math.atan2(
+        Math.sin(dLng / 2);
 
-Math.sqrt(a),
+    const c =
 
-Math.sqrt(1-a)
+        2 * Math.atan2(
 
-);
+            Math.sqrt(a),
 
-return R*c;
+            Math.sqrt(1 - a)
+        );
 
+    return R * c;
 }
-
