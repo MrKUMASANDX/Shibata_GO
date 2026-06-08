@@ -3,71 +3,74 @@
 
 <head>
 
-<meta charset="UTF-8">
+    <meta charset="UTF-8">
 
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
 
-<title>新発田市観光マップ</title>
+    <title>新発田市観光マップ</title>
 
-<link
-rel="stylesheet"
-href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+    <link rel="stylesheet"
+        href="https://unpkg.com/leaflet/dist/leaflet.css" />
 
-<link rel="stylesheet"
-href="style.css">
+    <link rel="stylesheet"
+        href="style.css">
 
 </head>
 
 <body>
 
-<h1>新発田市観光マップ</h1>
+    <h1>新発田市観光マップ</h1>
 
-<div id="info">
+    <div id="info">
 
-<p id="speed">
-速度: 0 km/h
-</p>
+        <p id="speed">
+            速度: 0 km/h
+        </p>
 
-<p id="distance">
-移動距離: 0 m
-</p>
+        <p id="distance">
+            移動距離: 0 m
+        </p>
 
-<div id="gpsData">
+        <div id="gpsData">
 
-<p id="latitude">
-緯度: -
-</p>
+            <p id="latitude">
+                緯度: -
+            </p>
 
-<p id="longitude">
-経度: -
-</p>
+            <p id="longitude">
+                経度: -
+            </p>
 
-<p id="accuracy">
-精度: -
-</p>
+            <p id="altitude">
+                高度: -
+            </p>
 
-</div>
+            <p id="accuracy">
+                精度: -
+            </p>
 
-<button id="followBtn">
-追従: ON
-</button>
+        </div>
 
-<button id="resetBtn">
-リセット
-</button>
+        <button id="followBtn">
+            追従: ON
+        </button>
 
-<button id="toggleGpsBtn">
-GPS情報を隠す
-</button>
+        <button id="resetBtn">
+            リセット
+        </button>
 
-</div>
+        <button id="toggleGpsBtn">
+            GPS情報を隠す
+        </button>
 
-<div id="map"></div>
+    </div>
 
-<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <div id="map"></div>
 
-<script src="script.js"></script>
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+    <script src="script.js"></script>
 
 </body>
 
