@@ -1,82 +1,74 @@
-
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>新発田GO</title>
 
-    <!-- Leaflet CSS -->
-    <link
-        rel="stylesheet"
-        href="https://unpkg.com/leaflet/dist/leaflet.css"
-    />
+<meta charset="UTF-8">
 
-    <link rel="stylesheet" href="style.css">
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>新発田市観光マップ</title>
+
+<link
+rel="stylesheet"
+href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+
+<link rel="stylesheet"
+href="style.css">
+
 </head>
 
 <body>
 
-    <h1>新発田GO</h1>
+<h1>新発田市観光マップ</h1>
 
-    <div id="info">
+<div id="info">
 
-        <!-- 速度 -->
-        <p id="speed">
-            速度: 0 km/h
-        </p>
+<p id="speed">
+速度: 0 km/h
+</p>
 
-        <!-- 移動距離 -->
-        <p id="distance">
-            移動距離: 0 m
-        </p>
+<p id="distance">
+移動距離: 0 m
+</p>
 
-        <!-- GPS情報 -->
-        <div id="gpsData">
+<div id="gpsData">
 
-            <p id="latitude">
-                緯度: -
-            </p>
+<p id="latitude">
+緯度: -
+</p>
 
-            <p id="longitude">
-                経度: -
-            </p>
+<p id="longitude">
+経度: -
+</p>
 
-            <p id="altitude">
-                標高: -
-            </p>
+<p id="accuracy">
+精度: -
+</p>
 
-            <p id="accuracy">
-                精度: -
-            </p>
+</div>
 
-        </div>
+<button id="followBtn">
+追従: ON
+</button>
 
-        <!-- 追従ボタン -->
-        <button id="followBtn">
-            追従: ON
-        </button>
+<button id="resetBtn">
+リセット
+</button>
 
-        <!-- リセットボタン -->
-        <button id="resetBtn">
-            リセット
-        </button>
+<button id="toggleGpsBtn">
+GPS情報を隠す
+</button>
 
-        <!-- GPS表示切替 -->
-        <button id="toggleGpsBtn">
-            GPS情報を隠す
-        </button>
+</div>
 
-        <!-- 地図 -->
-        <div id="map"></div>
-        
-        <!-- Leaflet JS -->
-        <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-        
-        <!-- JavaScript -->
-        <script src="script.js"></script>
+<div id="map"></div>
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+<script src="script.js"></script>
 
 </body>
-</html>
 
-      
+</html>
