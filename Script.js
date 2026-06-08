@@ -37,15 +37,6 @@ const toggleGpsBtn =
 const gpsData =
     document.getElementById("gpsData");
 
-const gpsIcon = L.icon({
-
-    iconUrl: 'location.png',
-
-    iconSize: [40, 40],
-
-    iconAnchor: [20, 20]
-});
-
 let followMode = true;
 
 let gpsVisible = true;
@@ -210,10 +201,6 @@ function success(position) {
         marker = L.marker(
 
             [lat, lng],
-
-            {
-                icon: gpsIcon
-            }
 
         ).addTo(map);
 
